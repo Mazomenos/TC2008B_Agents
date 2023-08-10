@@ -1,4 +1,5 @@
 """
+Graficación utilizando Pygame
 Laberinto
 TC2008B
 Gustavo Betancourt Mazomenos
