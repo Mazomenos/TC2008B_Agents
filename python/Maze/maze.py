@@ -13,6 +13,9 @@ import pygame, sys
 from pygame.locals import *
 
 # Variables Universales
+WIDTH = 600
+HEIGHT = 600
+SPEED = 10
 
 # Colores (constantes)
 BLACK = (0, 0, 0)
@@ -45,7 +48,12 @@ f2_2 = [(100,100),(100,350),(300,350),(300,300),(150,300)]
 pygame.init()
 
 # Se declara la ventana con sus dimensiones
-screen = pygame.display.set_mode((600,600))
+screen = pygame.display.set_mode((WIDTH,HEIGHT))
+
+char_img = pygame.image.load("hello.png").convert_alpha()
+char_rect = char_img.get_rect()
+char_rect.x = 10
+char_rect.y = 55
 
 # Atributo adicional para personalizar la ventana
 pygame.display.set_caption('Laberinto')
@@ -71,6 +79,8 @@ while True:
         lines2 = pygame.draw.lines(screen, BLACK, False, l2,2)
         fork2_1 = pygame.draw.lines(screen, BLACK, False, f2_1,2)
         fork2_2 = pygame.draw.lines(screen, BLACK, False, f2_2,2)
+
+        screen.blit(char_img, char_rect)
         
 
         # Evento que fianliza codigo al cerrar la ventana
@@ -78,15 +88,18 @@ while True:
             sys.exit()
 
         # Eventos al tocar teclas del teclado
-        if event.type == KEYDOWN:
-            if event.key == K_w:
-                y1 = y1 - 20
-            if event.key == K_a:
-                x1 = x1 - 20
-            if event.key == K_s:
-                y1 = y1 + 20
-            if event.key == K_d:
-                x1 = x1 + 20
+       
+
+
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_w] and char_rect.top > 0:
+           char_rect.y -= SPEED 
+        if keys[pygame.K_s] and char_rect.bottom < HEIGHT-20:
+           char_rect.y += SPEED
+        if keys[pygame.K_a] and char_rect.left > 0:
+           char_rect.x -= SPEED
+        if keys[pygame.K_d] and char_rect.right < WIDTH-20:
+           char_rect.x += SPEED
 
     # Actualiza la ventana mientras se este ejecutando
     pygame.display.update()

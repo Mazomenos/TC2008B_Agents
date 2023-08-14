@@ -31,14 +31,15 @@ pg.display.set_caption('Platformer')
 pg.init()
 display = pg.display.set_mode((WIDTH, HEIGHT))
 background = pg.image.load("grass.png").convert_alpha()
-dino_image = pg.image.load("dino.png").convert_alpha()
+dino_image = pg.image.load("charlie_brown3.png").convert_alpha()
 dino_rect = dino_image.get_rect()
 star_image = pg.image.load("star.png").convert_alpha()
 star_rect = star_image.get_rect()
 star_rect.center = (WIDTH//2, HEIGHT//2)
 clock = pg.time.Clock()
 
-
+dino_rect.x = 100
+dino_rect.y = 100
 
 
 while 1:
