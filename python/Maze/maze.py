@@ -15,7 +15,7 @@ from pygame.locals import *
 # Variables Universales
 WIDTH = 600
 HEIGHT = 600
-SPEED = 10
+SPEED = 5
 
 # Colores (constantes)
 BLACK = (0, 0, 0)
@@ -32,15 +32,17 @@ MAGENTA = (255, 0, 255)
 x1 = 150
 y1 = 150
 
-l1 = [(50,50),(550,50),(550,500),(250,500),(250,450),(250,500),(200,500)]
-f1_1 = [(350,50),(350,300),(500,300),(500,450),(500,300),(450,300),(450,450),(400,450),(400,400),(350,400),(350,350),(400,350)]
-f1_2 = [(450,50),(450,100),(500,100),(500,250),(400,250),(500,250),(500,150),(450,150),(450,200),(400,200),(400,100)]
-f1_3 = [(300,500),(300,400),(150,400),(200,400),(200,450)]
 
-l2 = [(550,550),(50,550),(50,100),(300,100),(300,250),(150,250),(150,150),(250,150),(250,200),(200,200)]
-f2_1 = [(150,550),(150,450),(150,500),(100,500),(100,400)]
-f2_2 = [(100,100),(100,350),(300,350),(300,300),(150,300)]
-
+lines = [((50,50),(550,50)),((550,50),(550,500)),((550,550),(50,550)),((50,100),(50,550)),
+         ((550,500),(200,500)),((50,100),(300,100)),((300,100),(300,250)),((300,250),(150,250)),
+         ((150,250),(150,150)),((150,150),(250,150)),((250,150),(250,200)),((250,200),(200,200)),
+         ((100,100),(100,350)),((100,350),(300,350)),((300,350),(300,300)),((300,300),(150,300)),
+         ((150,550),(150,450)),((250,500),(250,450)),((100,500),(150,500)),((100,500),(100,400)),
+         ((300,500),(300,400)),((300,400),(150,400)),((200,400),(200,450)),((350,50),(350,300)),
+         ((450,50),(450,100)),((450,100),(500,100)),((500,100),(500,250)),((500,250),(400,250)),
+         ((500,150),(450,150)),((450,150),(450,200)),((450,200),(400,200)),((400,200),(400,100)),
+         ((350,300),(500,300)),((500,300),(500,450)),((450,300),(450,450)),((450,450),(400,450)),
+         ((400,450),(400,400)),((400,400),(350,400)),((350,400),(350,350)),((350,350),(400,350))]
 
 # Tamaños
 
@@ -50,10 +52,10 @@ pygame.init()
 # Se declara la ventana con sus dimensiones
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 
-char_img = pygame.image.load("hello.png").convert_alpha()
+char_img = pygame.image.load("patito.png").convert_alpha()
 char_rect = char_img.get_rect()
 char_rect.x = 10
-char_rect.y = 55
+char_rect.y = 65
 
 # Atributo adicional para personalizar la ventana
 pygame.display.set_caption('Laberinto')
@@ -71,17 +73,10 @@ while True:
         #c1 = pygame.draw.rect(screen,WHITE, (x1,y1,300,300))
         #c2 = pygame.draw.rect(screen,MAGENTA, (200,200,200,200))
 
-        lines1 = pygame.draw.lines(screen, BLACK, False, l1,2)
-        fork1_1 = pygame.draw.lines(screen, BLACK, False, f1_1,2)
-        fork1_2 = pygame.draw.lines(screen, BLACK, False, f1_2,2)
-        fork1_2 = pygame.draw.lines(screen, BLACK, False, f1_3,2)
-
-        lines2 = pygame.draw.lines(screen, BLACK, False, l2,2)
-        fork2_1 = pygame.draw.lines(screen, BLACK, False, f2_1,2)
-        fork2_2 = pygame.draw.lines(screen, BLACK, False, f2_2,2)
-
         screen.blit(char_img, char_rect)
-        
+        for line in lines:
+            pygame.draw.line(screen,MAGENTA, *line,2)
+            
 
         # Evento que fianliza codigo al cerrar la ventana
         if event.type == QUIT:
@@ -100,6 +95,17 @@ while True:
            char_rect.x -= SPEED
         if keys[pygame.K_d] and char_rect.right < WIDTH-20:
            char_rect.x += SPEED
+
+        if any(char_rect.clipline(*line) for line in lines):
+            if keys[pygame.K_w] and char_rect.top > 0:
+               char_rect.y += SPEED 
+            if keys[pygame.K_s] and char_rect.bottom < HEIGHT-20:
+               char_rect.y -= SPEED
+            if keys[pygame.K_a] and char_rect.left > 0:
+               char_rect.x += SPEED
+            if keys[pygame.K_d] and char_rect.right < WIDTH-20:
+               char_rect.x -= SPEED
+            print("COLISION")
 
     # Actualiza la ventana mientras se este ejecutando
     pygame.display.update()
