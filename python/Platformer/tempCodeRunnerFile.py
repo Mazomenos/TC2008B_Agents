@@ -1,0 +1,1 @@
+keys = pg.key.get_pressed()
